@@ -29,25 +29,31 @@
             border-radius: 5px;
             margin: 20px 0;
         }
-        .filters {
+        .filter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .filter-row {
             display: flex;
             gap: 20px;
-            justify-content: center;
-            margin-bottom: 30px;
+            align-items: center;
         }
-        .search-bar {
-            width: 100%;
-            max-width: 500px;
+        .filter-label {
+            min-width: 150px;
+            font-weight: bold;
+        }
+        select {
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .filters select {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            min-width: 200px;
+            flex-grow: 1;
+            font-size: 1em;
         }
         .fragrances-grid {
             display: grid;
@@ -66,12 +72,6 @@
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
         }
-        .temp-section {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
         .temp-indicator {
             display: flex;
             align-items: center;
@@ -84,16 +84,9 @@
             font-weight: bold;
             color: white;
         }
-        .optimal-temp {
-            background: #28a745;
-        }
-        .warning-temp {
-            background: #ffc107;
-            color: black;
-        }
-        .danger-temp {
-            background: #dc3545;
-        }
+        .optimal-temp { background: #28a745; }
+        .warning-temp { background: #ffc107; color: black; }
+        .danger-temp { background: #dc3545; }
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -131,17 +124,29 @@
                 ⚠️ Pour une diffusion optimale, attendre que la cire soit à la bonne température avant d'incorporer la fragrance.
             </div>
         </div>
-        <input type="text" class="search-bar" placeholder="Rechercher une fragrance..." id="searchInput">
-        <div class="filters">
-            <select id="familleFilter">
-                <option value="">Toutes les familles</option>
-            </select>
-            <select id="temperatureFilter">
-                <option value="">Toutes les températures</option>
-                <option value="low">Basse (65-70°C)</option>
-                <option value="medium">Moyenne (71-75°C)</option>
-                <option value="high">Haute (76-80°C)</option>
-            </select>
+        
+        <div class="filter-container">
+            <div class="filter-row">
+                <span class="filter-label">Sélectionner une fragrance :</span>
+                <select id="fragranceSelect">
+                    <option value="">Toutes les fragrances</option>
+                </select>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">Filtrer par famille :</span>
+                <select id="familleFilter">
+                    <option value="">Toutes les familles</option>
+                </select>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">Filtrer par température :</span>
+                <select id="temperatureFilter">
+                    <option value="">Toutes les températures</option>
+                    <option value="low">Basse (65-70°C)</option>
+                    <option value="medium">Moyenne (71-75°C)</option>
+                    <option value="high">Haute (76-80°C)</option>
+                </select>
+            </div>
         </div>
     </div>
     
@@ -658,39 +663,56 @@
             return card;
         }
 
-        function updateFamilyFilter() {
-            const select = document.getElementById('familleFilter');
+        function initializeSelects() {
+            // Initialiser le select des fragrances
+            const fragranceSelect = document.getElementById('fragranceSelect');
+            fragrances.sort((a, b) => a.nom.localeCompare(b.nom)).forEach(fragrance => {
+                const option = document.createElement('option');
+                option.value = fragrance.nom;
+                option.textContent = fragrance.nom;
+                fragranceSelect.appendChild(option);
+            });
+
+            // Initialiser le select des familles
+            const familleFilter = document.getElementById('familleFilter');
             const familles = [...new Set(fragrances.map(f => f.famille))].sort();
             familles.forEach(famille => {
                 const option = document.createElement('option');
                 option.value = famille;
                 option.textContent = famille;
-                select.appendChild(option);
+                familleFilter.appendChild(option);
             });
         }
 
         function filterFragrances() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedFragrance = document.getElementById('fragranceSelect').value;
             const selectedFamille = document.getElementById('familleFilter').value;
             const selectedTemp = document.getElementById('temperatureFilter').value;
 
-            return fragrances.filter(fragrance => {
-                const matchesSearch = fragrance.nom.toLowerCase().includes(searchTerm) ||
-                                    fragrance.notes.toLowerCase().includes(searchTerm);
-                
-                const matchesFamille = !selectedFamille || fragrance.famille === selectedFamille;
-                
-                let matchesTemp = true;
-                if (selectedTemp === 'low') {
-                    matchesTemp = fragrance.tempIncorporation >= 65 && fragrance.tempIncorporation <= 70;
-                } else if (selectedTemp === 'medium') {
-                    matchesTemp = fragrance.tempIncorporation > 70 && fragrance.tempIncorporation <= 75;
-                } else if (selectedTemp === 'high') {
-                    matchesTemp = fragrance.tempIncorporation > 75;
-                }
+            let filteredFragrances = fragrances;
 
-                return matchesSearch && matchesFamille && matchesTemp;
-            });
+            if (selectedFragrance) {
+                filteredFragrances = filteredFragrances.filter(f => f.nom === selectedFragrance);
+            }
+
+            if (selectedFamille) {
+                filteredFragrances = filteredFragrances.filter(f => f.famille === selectedFamille);
+            }
+
+            if (selectedTemp) {
+                filteredFragrances = filteredFragrances.filter(f => {
+                    if (selectedTemp === 'low') {
+                        return f.tempIncorporation >= 65 && f.tempIncorporation <= 70;
+                    } else if (selectedTemp === 'medium') {
+                        return f.tempIncorporation > 70 && f.tempIncorporation <= 75;
+                    } else if (selectedTemp === 'high') {
+                        return f.tempIncorporation > 75;
+                    }
+                    return true;
+                });
+            }
+
+            return filteredFragrances;
         }
 
         function displayFragrances(fragrancesToShow) {
@@ -702,7 +724,7 @@
         }
 
         // Event listeners
-        document.getElementById('searchInput').addEventListener('input', () => {
+        document.getElementById('fragranceSelect').addEventListener('change', () => {
             displayFragrances(filterFragrances());
         });
 
@@ -715,7 +737,7 @@
         });
 
         // Initialisation
-        updateFamilyFilter();
+        initializeSelects();
         displayFragrances(fragrances);
     </script>
 </body>
