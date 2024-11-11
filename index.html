@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Températures d'Incorporation - Cire Soja-Coco</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .info-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .filters {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .filters select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-width: 200px;
+        }
+        .fragrances-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .fragrance-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .fragrance-card h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .temp-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .temp-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 10px auto;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+        }
+        .optimal-temp {
+            background: #28a745;
+        }
+        .warning-temp {
+            background: #ffc107;
+            color: black;
+        }
+        .danger-temp {
+            background: #dc3545;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 0.9em;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .recommendation {
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .famille-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #e9ecef;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Guide des Températures d'Incorporation - Cire Soja-Coco</h1>
+        <div class="info-box">
+            <h2>Guide d'Incorporation pour Cire Soja-Coco</h2>
+            <p>Température de fusion : 82-85°C</p>
+            <p>Température d'incorporation recommandée : 70-75°C</p>
+            <div class="warning">
+                ⚠️ Pour une diffusion optimale, attendre que la cire soit à la bonne température avant d'incorporer la fragrance.
+            </div>
+        </div>
+        <input type="text" class="search-bar" placeholder="Rechercher une fragrance..." id="searchInput">
+        <div class="filters">
+            <select id="familleFilter">
+                <option value="">Toutes les familles</option>
+            </select>
+            <select id="temperatureFilter">
+                <option value="">Toutes les températures</option>
+                <option value="low">Basse (65-70°C)</option>
+                <option value="medium">Moyenne (71-75°C)</option>
+                <option value="high">Haute (76-80°C)</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="fragrances-grid" id="fragrancesContainer">
+    </div>
+
+    <script>
+        const fragrances = [
+            {
+                nom: "Fleur d'Oranger",
+                tempIncorporation: 72,
+                pointEclair: 80,
+                concentration: "6-8%",
+                famille: "Florale",
+                notes: "Florale, délicate, agrumée",
+                recommandations: "Fragrance délicate à incorporer lentement. Idéale pour les bougies printanières."
+            },
+            {
+                nom: "Monoï de Tahiti",
+                tempIncorporation: 73,
+                pointEclair: 83,
+                concentration: "8-10%",
+                famille: "Florale",
+                notes: "Fleur de tiaré, noix de coco, solaire",
+                recommandations: "Excellente tenue dans la cire soja-coco grâce aux notes de coco."
+            },
+            {
+                nom: "Ambre & Jasmin",
+                tempIncorporation: 74,
+                pointEclair: 85,
+                concentration: "7-9%",
+                famille: "Orientale",
+                notes: "Orientale, florale, ambrée",
+                recommandations: "Bonne diffusion à froid. Incorporer progressivement."
+            },
+            {
+                nom: "Verveine Citronnée",
+                tempIncorporation: 70,
+                pointEclair: 78,
+                concentration: "5-7%",
+                famille: "Agrumes",
+                notes: "Fraîche, citronnée, herbacée",
+                recommandations: "Température basse pour préserver les notes de tête."
+            },
+            {
+                nom: "Bois de Cèdre",
+                tempIncorporation: 75,
+                pointEclair: 88,
+                concentration: "7-9%",
+                famille: "Boisée",
+                notes: "Boisée, sèche, résineuse",
+                recommandations: "Supporte bien la chaleur. Excellente tenue."
+            },
+            {
+                nom: "Vanille Gourmande",
+                tempIncorporation: 73,
+                pointEclair: 82,
+                concentration: "8-10%",
+                famille: "Gourmande",
+                notes: "Vanille, caramel, crème",
+                recommandations: "Fragrance idéale pour la cire soja-coco. Très bonne diffusion."
+            },
+            {
+                nom: "Patchouli d'Indonésie",
+                tempIncorporation: 74,
+                pointEclair: 86,
+                concentration: "6-8%",
+                famille: "Orientale",
+                notes: "Boisée, terreuse, orientale",
+                recommandations: "Excellente tenue à chaud et à froid."
+            },
+            {
+                nom: "Figue Fraîche",
+                tempIncorporation: 71,
+                pointEclair: 81,
+                concentration: "7-9%",
+                famille: "Fruitée",
+                notes: "Fruitée, verte, lactée",
+                recommandations: "Incorporer à température modérée pour préserver les notes vertes."
+            },
+            {
+                nom: "Lavande de Provence",
+                tempIncorporation: 70,
+                pointEclair: 77,
+                concentration: "6-8%",
+                famille: "Aromatique",
+                notes: "Herbacée, fraîche, florale",
+                recommandations: "Température basse recommandée pour cette fragrance délicate."
+            },
+            {
+                nom: "Pain d'Épices",
+                tempIncorporation: 73,
+                pointEclair: 84,
+                concentration: "8-10%",
+                famille: "Gourmande",
+                notes: "Épicée, chaude, gourmande",
+                recommandations: "Les notes épicées supportent bien la chaleur."
+            },
+            {
+                nom: "Fleur de Coton",
+                tempIncorporation: 72,
+                pointEclair: 80,
+                concentration: "5-7%",
+                famille: "Florale",
+                notes: "Poudrée, douce, propre",
+                recommandations: "Fragrance délicate à incorporer à température modérée."
+            },
+            {
+                nom: "Thé Vert & Jasmin",
+                tempIncorporation: 71,
+                pointEclair: 79,
+                concentration: "6-8%",
+                famille: "Aromatique",
+                notes: "Fraîche, florale, végétale",
+                recommandations: "Incorporer lentement pour préserver les notes de thé."
+            {
+                nom: "Fleur d'Oranger",
+                tempIncorporation: 72,
+                pointEclair: 80,
+                concentration: "6-8%",
+                famille: "Florale",
+                notes: "Florale, délicate, agrumée",
+                recommandations: "Fragrance délicate à incorporer lentement. Idéale pour les bougies printanières."
+            },
+            {
+                nom: "Monoï de Tahiti",
+                tempIncorporation: 73,
+                pointEclair: 83,
+                concentration: "8-10%",
+                famille: "Florale",
+                notes: "Fleur de tiaré, noix de coco, solaire",
+                recommandations: "Excellente tenue dans la cire soja-coco grâce aux notes de coco."
+            },
+            {
+                nom: "Ambre & Jasmin",
+                tempIncorporation: 74,
+                pointEclair: 85,
+                concentration: "7-9%",
+                famille: "Orientale",
+                notes: "Orientale, florale, ambrée",
+                recommandations: "Bonne diffusion à froid. Incorporer progressivement."
+            },
+            // Ajout de nouvelles fragrances
+            {
+                nom: "Forêt de Pins",
+                tempIncorporation: 71,
+                pointEclair: 79,
+                concentration: "7-9%",
+                famille: "Boisée",
+                notes: "Résineuse, verte, fraîche",
+                recommandations: "Excellente pour les ambiances hivernales. Bonne tenue dans la cire."
+            },
+            {
+                nom: "Néroli & Bergamote",
+                tempIncorporation: 70,
+                pointEclair: 78,
+                concentration: "5-7%",
+                famille: "Agrumes",
+                notes: "Fraîche, hespéridée, florale",
+                recommandations: "Incorporer à basse température pour préserver les notes d'agrumes."
+            },
+            {
+                nom: "Chocolat Noir",
+                tempIncorporation: 74,
+                pointEclair: 86,
+                concentration: "8-10%",
+                famille: "Gourmande",
+                notes: "Cacaotée, chaude, gourmande",
+                recommandations: "Supporte bien la chaleur. Parfaite pour les bougies d'hiver."
+            },
+            {
+                nom: "Rose & Pivoine",
+                tempIncorporation: 71,
+                pointEclair: 79,
+                concentration: "6-8%",
+                famille: "Florale",
+                notes: "Florale, poudrée, fraîche",
+                recommandations: "Fragrance délicate. Incorporer doucement pour préserver les notes."
+            },
+            {
+                nom: "Mûre Sauvage",
+                tempIncorporation: 72,
+                pointEclair: 81,
+                concentration: "7-9%",
+                famille: "Fruitée",
+                notes: "Fruitée, sucrée, fraîche",
+                recommandations: "Bonne tenue. Notes fruitées bien préservées dans la cire."
+            },
+            {
+                nom: "Cuir & Santal",
+                tempIncorporation: 75,
+                pointEclair: 88,
+                concentration: "7-9%",
+                famille: "Cuirée",
+                notes: "Cuirée, boisée, chaude",
+                recommandations: "Fragrance robuste qui supporte bien la chaleur."
+            },
+            {
+                nom: "Lilas Blanc",
+                tempIncorporation: 70,
+                pointEclair: 77,
+                concentration: "5-7%",
+                famille: "Florale",
+                notes: "Florale, verte, printanière",
+                recommandations: "Très délicate. Incorporer à basse température."
+            },
+            {
+                nom: "Café Intense",
+                tempIncorporation: 73,
+                pointEclair: 84,
+                concentration: "8-10%",
+                famille: "Gourmande",
+                notes: "Torréfiée, chaude, intense",
+                recommandations: "Excellente diffusion. Notes bien préservées."
+            },
+            {
+                nom: "Eucalyptus & Menthe",
+                tempIncorporation: 71,
+                pointEclair: 78,
+                concentration: "6-8%",
+                famille: "Fraîche",
+                notes: "Fraîche, mentholée, verte",
+                recommandations: "Incorporer à température modérée pour les notes fraîches."
+            },
+            {
+                nom: "Vanille & Muscade",
+                tempIncorporation: 73,
+                pointEclair: 83,
+                concentration: "7-9%",
+                famille: "Épicée",
+                notes: "Vanillée, épicée, chaude",
+                recommandations: "Bonne tenue. Les notes épicées se diffusent bien."
+            },
+            {
+                nom: "Marine & Sel",
+                tempIncorporation: 70,
+                pointEclair: 76,
+                concentration: "5-7%",
+                famille: "Marine",
+                notes: "Iodée, fraîche, marine",
+                recommandations: "Incorporer à basse température pour préserver la fraîcheur."
+            },
+            {
+                nom: "Jasmin de Nuit",
+                tempIncorporation: 72,
+                pointEclair: 82,
+                concentration: "6-8%",
+                famille: "Florale",
+                notes: "Florale, capiteuse, chaude",
+                recommandations: "Excellente diffusion. Notes bien préservées."
+            },
+            {
+                nom: "Miel & Amande",
+                tempIncorporation: 74,
+                pointEclair: 85,
+                concentration: "8-10%",
+                famille: "Gourmande",
+                notes: "Miellée, amandée, douce",
+                recommandations: "Bonne tenue dans la cire. Notes gourmandes bien préservées."
+            },
+            {
+                nom: "Bambou & Lotus",
+                tempIncorporation: 71,
+                pointEclair: 79,
+                concentration: "5-7%",
+                famille: "Verte",
+                notes: "Verte, aquatique, fraîche",
+                recommandations: "Fragrance délicate. Incorporer à température modérée."
+            },
+            {
+                nom: "Pamplemousse Rose",
+                tempIncorporation: 70,
+                pointEclair: 77,
+                concentration: "6-8%",
+                famille: "Agrumes",
+                notes: "Agrumes, fraîche, pétillante",
+                recommandations: "Température basse pour préserver les agrumes."
+            },
+            {
+                nom: "Bois de Oud",
+                tempIncorporation: 75,
+                pointEclair: 87,
+                concentration: "7-9%",
+                famille: "Orientale",
+                notes: "Boisée, orientale, chaude",
+                recommandations: "Supporte bien la chaleur. Excellente tenue."
+            },
+            {
+                nom: "Fleur de Frangipanier",
+                tempIncorporation: 71,
+                pointEclair: 80,
+                concentration: "6-8%",
+                famille: "Florale",
+                notes: "Florale, exotique, douce",
+                recommandations: "Incorporer doucement pour préserver les notes florales."
+            }
+        ];
+
+        function getTempClass(temp) {
+            if (temp <= 72) return 'optimal-temp';
+            if (temp <= 75) return 'warning-temp';
+            return 'danger-temp';
+        }
+
+        function createFragranceCard(fragrance) {
+            const card = document.createElement('div');
+            card.className = 'fragrance-card';
+            
+            const tempClass = getTempClass(fragrance.tempIncorporation);
+            
+            card.innerHTML = `
+                <h3>${fragrance.nom}</h3>
+                <div class="famille-tag">${fragrance.famille}</div>
+                <div class="temp-indicator ${tempClass}">
+                    ${fragrance.tempIncorporation}°C
+                </div>
+                <div class="info-row">
+                    <span>Point éclair:</span>
+                    <span>${fragrance.pointEclair}°C</span>
+                </div>
+                <div class="info-row">
+                    <span>Concentration:</span>
+                    <span>${fragrance.concentration}</span>
+                </div>
+                <div class="info-row">
+                    <span>Notes:</span>
+                    <span>${fragrance.notes}</span>
+                </div>
+                <div class="recommendation">
+                    💡 ${fragrance.recommandations}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function updateFamilyFilter() {
+            const select = document.getElementById('familleFilter');
+            const familles = [...new Set(fragrances.map(f => f.famille))].sort();
+            familles.forEach(famille => {
+                const option = document.createElement('option');
+                option.value = famille;
+                option.textContent = famille;
+                select.appendChild(option);
+            });
+        }
+
+        function filterFragrances() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedFamille = document.getElementById('familleFilter').value;
+            const selectedTemp = document.getElementById('temperatureFilter').value;
+
+            return fragrances.filter(fragrance => {
+                const matchesSearch = fragrance.nom.toLowerCase().includes(searchTerm) ||
+                                    fragrance.notes.toLowerCase().includes(searchTerm);
+                
+                const matchesFamille = !selectedFamille || fragrance.famille === selectedFamille;
+                
+                let matchesTemp = true;
+                if (selectedTemp === 'low') {
+                    matchesTemp = fragrance.tempIncorporation >= 65 && fragrance.tempIncorporation <= 70;
+                } else if (selectedTemp === 'medium') {
+                    matchesTemp = fragrance.tempIncorporation > 70 && fragrance.tempIncorporation <= 75;
+                } else if (selectedTemp === 'high') {
+                    matchesTemp = fragrance.tempIncorporation > 75;
+                }
+
+                return matchesSearch && matchesFamille && matchesTemp;
+            });
+        }
+
+        function displayFragrances(fragrancesToShow) {
+            const container = document.getElementById('fragrancesContainer');
+            container.innerHTML = '';
+            fragrancesToShow.forEach(fragrance => {
+                container.appendChild(createFragranceCard(fragrance));
+            });
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', () => {
+            displayFragrances(filterFragrances());
+        });
+
+        document.getElementById('familleFilter').addEventListener('change', () => {
+            displayFragrances(filterFragrances());
+        });
+
+        document.getElementById('temperatureFilter').addEventListener('change', () => {
+            displayFragrances(filterFragrances());
+        });
+
+        // Initialisation
+        updateFamilyFilter();
+        displayFragrances(fragrances);
+    </script>
+</body>
+</html>
