@@ -277,7 +277,6 @@
     </div>
     
     <div id="fragranceContainer"></div>
-
     <script>
         const fragrances = [
             {
@@ -299,85 +298,40 @@
                 recommandations: "Excellente tenue dans la cire soja-coco grâce aux notes de coco."
             },
             {
-                nom: "Ambre & Jasmin",
-                tempIncorporation: 74,
+                nom: "Vanille Bourbon",
+                tempIncorporation: 73,
                 pointEclair: 85,
-                concentration: "7-9%",
-                famille: "Orientale",
-                notes: "Orientale, florale, ambrée",
-                recommandations: "Bonne diffusion à froid. Incorporer progressivement."
+                concentration: "8-10%",
+                famille: "Gourmande",
+                notes: "Vanillée, crémeuse, chaude",
+                recommandations: "Très bonne tenue. Idéale pour les bougies d'hiver."
             },
             {
-                nom: "Verveine Citronnée",
-                tempIncorporation: 70,
-                pointEclair: 78,
-                concentration: "5-7%",
-                famille: "Agrumes",
-                notes: "Fraîche, citronnée, herbacée",
-                recommandations: "Température basse pour préserver les notes de tête."
-            },
-            {
-                nom: "Bois de Cèdre",
+                nom: "Cèdre & Patchouli",
                 tempIncorporation: 75,
                 pointEclair: 88,
                 concentration: "7-9%",
                 famille: "Boisée",
-                notes: "Boisée, sèche, résineuse",
-                recommandations: "Supporte bien la chaleur. Excellente tenue."
+                notes: "Boisée, ambrée, orientale",
+                recommandations: "Fragrance puissante, bien respecter les dosages."
             },
             {
-                nom: "Vanille Gourmande",
-                tempIncorporation: 73,
+                nom: "Pomme & Cannelle",
+                tempIncorporation: 72,
                 pointEclair: 82,
-                concentration: "8-10%",
-                famille: "Gourmande",
-                notes: "Vanille, caramel, crème",
-                recommandations: "Fragrance idéale pour la cire soja-coco. Très bonne diffusion."
-            },
-            {
-                nom: "Patchouli d'Indonésie",
-                tempIncorporation: 74,
-                pointEclair: 86,
-                concentration: "6-8%",
-                famille: "Orientale",
-                notes: "Boisée, terreuse, orientale",
-                recommandations: "Excellente tenue à chaud et à froid."
-            },
-            {
-                nom: "Figue Fraîche",
-                tempIncorporation: 71,
-                pointEclair: 81,
                 concentration: "7-9%",
                 famille: "Fruitée",
-                notes: "Fruitée, verte, lactée",
-                recommandations: "Incorporer à température modérée pour préserver les notes vertes."
+                notes: "Fruitée, épicée, gourmande",
+                recommandations: "Parfaite pour l'automne, bonne diffusion."
             },
             {
                 nom: "Lavande de Provence",
                 tempIncorporation: 70,
-                pointEclair: 77,
+                pointEclair: 78,
                 concentration: "6-8%",
                 famille: "Aromatique",
-                notes: "Herbacée, fraîche, florale",
-                recommandations: "Température basse recommandée pour cette fragrance délicate."
-            },
-            {
-                nom: "Pain d'Épices",
-                tempIncorporation: 73,
-                pointEclair: 84,
-                concentration: "8-10%",
-                famille: "Gourmande",
-                notes: "Épicée, chaude, gourmande",
-                recommandations: "Les notes épicées supportent bien la chaleur."
-            },
-            {
-                nom: "Fleur de Coton",
-                tempIncorporation: 72,
-                pointEclair: 80,
-                concentration: "5-7%",
-                famille: "Florale",
-                notes: "Poudrée, douce, propre",
-                recommandations: "Fragrance délicate à incorporer à température modérée."
+                notes: "Herbacée, florale, fraîche",
+                recommandations: "Incorporer à basse température pour préserver les notes."
             },
             {
                 nom: "Thé Vert & Jasmin",
@@ -385,165 +339,39 @@
                 pointEclair: 79,
                 concentration: "6-8%",
                 famille: "Aromatique",
-                notes: "Fraîche, florale, végétale",
-                recommandations: "Incorporer lentement pour préserver les notes de thé."
+                notes: "Fraîche, florale, délicate",
+                recommandations: "Notes délicates, température basse conseillée."
             },
             {
-                nom: "Forêt de Pins",
-                tempIncorporation: 71,
-                pointEclair: 79,
-                concentration: "7-9%",
-                famille: "Boisée",
-                notes: "Résineuse, verte, fraîche",
-                recommandations: "Excellente pour les ambiances hivernales. Bonne tenue dans la cire."
-            },
-            {
-                nom: "Néroli & Bergamote",
-                tempIncorporation: 70,
-                pointEclair: 78,
-                concentration: "5-7%",
-                famille: "Agrumes",
-                notes: "Fraîche, hespéridée, florale",
-                recommandations: "Incorporer à basse température pour préserver les notes d'agrumes."
-            },
-            {
-                nom: "Chocolat Noir",
-                tempIncorporation: 74,
-                pointEclair: 86,
-                concentration: "8-10%",
-                famille: "Gourmande",
-                notes: "Cacaotée, chaude, gourmande",
-                recommandations: "Supporte bien la chaleur. Parfaite pour les bougies d'hiver."
-            },
-            {
-                nom: "Rose & Pivoine",
-                tempIncorporation: 71,
-                pointEclair: 79,
-                concentration: "6-8%",
-                famille: "Florale",
-                notes: "Florale, poudrée, fraîche",
-                recommandations: "Fragrance délicate. Incorporer doucement pour préserver les notes."
-            },
-            {
-                nom: "Mûre Sauvage",
+                nom: "Figue & Néroli",
                 tempIncorporation: 72,
                 pointEclair: 81,
                 concentration: "7-9%",
                 famille: "Fruitée",
-                notes: "Fruitée, sucrée, fraîche",
-                recommandations: "Bonne tenue. Notes fruitées bien préservées dans la cire."
+                notes: "Fruitée, verte, florale",
+                recommandations: "Mélange subtil, bonne tenue dans la cire."
             },
             {
-                nom: "Lilas Blanc",
-                tempIncorporation: 70,
-                pointEclair: 77,
-                concentration: "5-7%",
-                famille: "Florale",
-                notes: "Florale, verte, printanière",
-                recommandations: "Très délicate. Incorporer à basse température."
-            },
-            {
-                nom: "Café Intense",
-                tempIncorporation: 73,
-                pointEclair: 84,
-                concentration: "8-10%",
-                famille: "Gourmande",
-                notes: "Torréfiée, chaude, intense",
-                recommandations: "Excellente diffusion. Notes bien préservées."
-            },
-            {
-                nom: "Vanille & Muscade",
-                tempIncorporation: 73,
-                pointEclair: 83,
-                concentration: "7-9%",
-                famille: "Épicée",
-                notes: "Vanillée, épicée, chaude",
-                recommandations: "Bonne tenue. Les notes épicées se diffusent bien."
-            },
-            {
-                nom: "Marine & Sel",
-                tempIncorporation: 70,
-                pointEclair: 76,
-                concentration: "5-7%",
-                famille: "Marine",
-                notes: "Iodée, fraîche, marine",
-                recommandations: "Incorporer à basse température pour préserver la fraîcheur."
-            },
-            {
-                nom: "Jasmin de Nuit",
-                tempIncorporation: 72,
-                pointEclair: 82,
-                concentration: "6-8%",
-                famille: "Florale",
-                notes: "Florale, capiteuse, chaude",
-                recommandations: "Excellente diffusion. Notes bien préservées."
-            },
-            {
-                nom: "Miel & Amande",
+                nom: "Ambre & Santal",
                 tempIncorporation: 74,
-                pointEclair: 85,
-                concentration: "8-10%",
-                famille: "Gourmande",
-                notes: "Miellée, amandée, douce",
-                recommandations: "Bonne tenue dans la cire. Notes gourmandes bien préservées."
-            },
-            {
-                nom: "Bambou & Lotus",
-                tempIncorporation: 71,
-                pointEclair: 79,
-                concentration: "5-7%",
-                famille: "Verte",
-                notes: "Verte, aquatique, fraîche",
-                recommandations: "Fragrance délicate. Incorporer à température modérée."
-            },
-            {
-                nom: "Bois de Oud",
-                tempIncorporation: 75,
-                pointEclair: 87,
+                pointEclair: 86,
                 concentration: "7-9%",
                 famille: "Orientale",
-                notes: "Boisée, orientale, chaude",
-                recommandations: "Supporte bien la chaleur. Excellente tenue."
-            },
-           {
-                nom: "Cuir & Santal",
-                tempIncorporation: 75,
-                pointEclair: 88,
-                concentration: "7-9%",
-                famille: "Cuirée",
-                notes: "Cuirée, boisée, chaude",
-                recommandations: "Fragrance robuste qui supporte bien la chaleur."
+                notes: "Ambrée, boisée, chaude",
+                recommandations: "Excellente tenue à haute température."
             },
             {
-                nom: "Eucalyptus & Menthe",
-                tempIncorporation: 71,
-                pointEclair: 78,
-                concentration: "6-8%",
-                famille: "Fraîche",
-                notes: "Fraîche, mentholée, verte",
-                recommandations: "Incorporer à température modérée pour les notes fraîches."
-            },
-            {
-                nom: "Pamplemousse Rose",
+                nom: "Citron & Verveine",
                 tempIncorporation: 70,
                 pointEclair: 77,
-                concentration: "6-8%",
+                concentration: "5-7%",
                 famille: "Agrumes",
-                notes: "Agrumes, fraîche, pétillante",
-                recommandations: "Température basse pour préserver les agrumes."
-            },
-           {
-                nom: "Fleur de Frangipanier",
-                tempIncorporation: 71,
-                pointEclair: 80,
-                concentration: "6-8%",
-                famille: "Florale",
-                notes: "Florale, exotique, douce",
-                recommandations: "Incorporer doucement pour préserver les notes florales."
+                notes: "Citronnée, fraîche, herbacée",
+                recommandations: "Incorporer à basse température pour les agrumes."
             }
         ];
 
-         function getTempClass(temp) {
+        function getTempClass(temp) {
             if (temp <= 72) return 'optimal-temp';
             if (temp <= 75) return 'warning-temp';
             return 'danger-temp';
@@ -617,7 +445,35 @@
             return card;
         }
 
-        // [Le reste du JavaScript reste identique]
+        function initializeSelect() {
+            const select = document.getElementById('fragranceSelect');
+            fragrances.sort((a, b) => a.nom.localeCompare(b.nom)).forEach(fragrance => {
+                const option = document.createElement('option');
+                option.value = fragrance.nom;
+                option.textContent = fragrance.nom;
+                select.appendChild(option);
+            });
+        }
+
+        function displayFragrance(fragranceName) {
+            const container = document.getElementById('fragranceContainer');
+            container.innerHTML = '';
+            
+            if (fragranceName) {
+                const fragrance = fragrances.find(f => f.nom === fragranceName);
+                if (fragrance) {
+                    container.appendChild(createFragranceCard(fragrance));
+                }
+            }
+        }
+
+        // Event listener
+        document.getElementById('fragranceSelect').addEventListener('change', (e) => {
+            displayFragrance(e.target.value);
+        });
+
+        // Initialisation
+        initializeSelect();
     </script>
 </body>
 </html>
