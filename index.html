@@ -29,58 +29,59 @@
             border-radius: 5px;
             margin: 20px 0;
         }
-        .filter-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .select-container {
             background: white;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 30px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .filter-row {
             display: flex;
-            gap: 20px;
             align-items: center;
+            justify-content: center;
+            gap: 15px;
         }
-        .filter-label {
-            min-width: 150px;
+        .select-label {
             font-weight: bold;
+            font-size: 1.1em;
+            color: #2c3e50;
         }
         select {
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            flex-grow: 1;
             font-size: 1em;
+            min-width: 300px;
+            cursor: pointer;
         }
-        .fragrances-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+        select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
         }
         .fragrance-card {
             background: white;
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
         }
         .fragrance-card h3 {
             color: #2c3e50;
             margin-top: 0;
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
+            text-align: center;
         }
         .temp-indicator {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            margin: 10px auto;
-            font-size: 1.2em;
+            margin: 20px auto;
+            font-size: 1.3em;
             font-weight: bold;
             color: white;
         }
@@ -90,26 +91,32 @@
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin: 5px 0;
-            font-size: 0.9em;
-            padding: 5px 0;
+            margin: 8px 0;
+            font-size: 1em;
+            padding: 8px 0;
             border-bottom: 1px solid #eee;
+        }
+        .info-row:last-child {
+            border-bottom: none;
         }
         .recommendation {
             font-style: italic;
             color: #666;
-            margin-top: 10px;
-            padding: 10px;
+            margin-top: 15px;
+            padding: 15px;
             background: #f8f9fa;
             border-radius: 5px;
+            text-align: center;
         }
         .famille-tag {
-            display: inline-block;
-            padding: 3px 8px;
+            text-align: center;
+            display: block;
+            padding: 5px 10px;
             background: #e9ecef;
-            border-radius: 12px;
-            font-size: 0.8em;
-            margin-top: 5px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin: 10px auto;
+            width: fit-content;
         }
     </style>
 </head>
@@ -125,33 +132,15 @@
             </div>
         </div>
         
-        <div class="filter-container">
-            <div class="filter-row">
-                <span class="filter-label">Sélectionner une fragrance :</span>
-                <select id="fragranceSelect">
-                    <option value="">Toutes les fragrances</option>
-                </select>
-            </div>
-            <div class="filter-row">
-                <span class="filter-label">Filtrer par famille :</span>
-                <select id="familleFilter">
-                    <option value="">Toutes les familles</option>
-                </select>
-            </div>
-            <div class="filter-row">
-                <span class="filter-label">Filtrer par température :</span>
-                <select id="temperatureFilter">
-                    <option value="">Toutes les températures</option>
-                    <option value="low">Basse (65-70°C)</option>
-                    <option value="medium">Moyenne (71-75°C)</option>
-                    <option value="high">Haute (76-80°C)</option>
-                </select>
-            </div>
+        <div class="select-container">
+            <label for="fragranceSelect" class="select-label">Choisir une fragrance :</label>
+            <select id="fragranceSelect">
+                <option value="">Sélectionner une fragrance</option>
+            </select>
         </div>
     </div>
     
-    <div class="fragrances-grid" id="fragrancesContainer">
-    </div>
+    <div id="fragranceContainer"></div>
 
     <script>
         const fragrances = [
@@ -456,82 +445,37 @@
             return card;
         }
 
-        function initializeSelects() {
-            // Initialiser le select des fragrances
-            const fragranceSelect = document.getElementById('fragranceSelect');
+        function initializeSelect() {
+            const select = document.getElementById('fragranceSelect');
             fragrances.sort((a, b) => a.nom.localeCompare(b.nom)).forEach(fragrance => {
                 const option = document.createElement('option');
                 option.value = fragrance.nom;
                 option.textContent = fragrance.nom;
-                fragranceSelect.appendChild(option);
-            });
-
-            // Initialiser le select des familles
-            const familleFilter = document.getElementById('familleFilter');
-            const familles = [...new Set(fragrances.map(f => f.famille))].sort();
-            familles.forEach(famille => {
-                const option = document.createElement('option');
-                option.value = famille;
-                option.textContent = famille;
-                familleFilter.appendChild(option);
+                select.appendChild(option);
             });
         }
 
-        function filterFragrances() {
-            const selectedFragrance = document.getElementById('fragranceSelect').value;
-            const selectedFamille = document.getElementById('familleFilter').value;
-            const selectedTemp = document.getElementById('temperatureFilter').value;
-
-            let filteredFragrances = fragrances;
-
-            if (selectedFragrance) {
-                filteredFragrances = filteredFragrances.filter(f => f.nom === selectedFragrance);
-            }
-
-            if (selectedFamille) {
-                filteredFragrances = filteredFragrances.filter(f => f.famille === selectedFamille);
-            }
-
-            if (selectedTemp) {
-                filteredFragrances = filteredFragrances.filter(f => {
-                    if (selectedTemp === 'low') {
-                        return f.tempIncorporation >= 65 && f.tempIncorporation <= 70;
-                    } else if (selectedTemp === 'medium') {
-                        return f.tempIncorporation > 70 && f.tempIncorporation <= 75;
-                    } else if (selectedTemp === 'high') {
-                        return f.tempIncorporation > 75;
-                    }
-                    return true;
-                });
-            }
-
-            return filteredFragrances;
-        }
-
-        function displayFragrances(fragrancesToShow) {
-            const container = document.getElementById('fragrancesContainer');
+        function displayFragrance(fragranceName) {
+            const container = document.getElementById('fragranceContainer');
             container.innerHTML = '';
-            fragrancesToShow.forEach(fragrance => {
-                container.appendChild(createFragranceCard(fragrance));
-            });
+            
+            if (fragranceName) {
+                const fragrance = fragrances.find(f => f.nom === fragranceName);
+                if (fragrance) {
+                    container.appendChild(createFragranceCard(fragrance));
+                }
+            }
         }
 
-        // Event listeners
-        document.getElementById('fragranceSelect').addEventListener('change', () => {
-            displayFragrances(filterFragrances());
-        });
-
-        document.getElementById('familleFilter').addEventListener('change', () => {
-            displayFragrances(filterFragrances());
-        });
-
-        document.getElementById('temperatureFilter').addEventListener('change', () => {
-            displayFragrances(filterFragrances());
+        // Event listener
+        document.getElementById('fragranceSelect').addEventListener('change', (e) => {
+            displayFragrance(e.target.value);
         });
 
         // Initialisation
-        initializeSelects();
-        displayFragrances(fragrances);
+        initializeSelect();
     </script>
+</body>
+</html>
 </body>
 </html>
